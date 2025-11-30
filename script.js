@@ -3,8 +3,8 @@ const responseFromServer =
   {
     challenge: "dGVzdGRk",
     rp: {
-      name: "Example",
-      id: "example.com",
+      name: "Passkeys Demo",
+      id: "rohit19060.github.io",
     },
     user: {
       id: "dGVzdGRk",
