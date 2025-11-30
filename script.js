@@ -58,9 +58,25 @@ function createPasskey() {
         // const decoded_options = JSON.parse(_options);
         const options =
           PublicKeyCredential.parseCreationOptionsFromJSON(responseFromServer);
-        const credential = await navigator.credentials.create({
-          publicKey: options,
-        });
+       try{
+         const credential = await navigator.credentials.create({
+           publicKey: options,
+         });
+       } catch(error){
+         // InvalidStateError: A passkey already exists on the device. No error dialog will be shown to the user. The site shouldn't treat this as an error. The user wanted the local device registered and it is.
+         // NotAllowedError: The user has canceled the operation.
+         // AbortError: The operation has been aborted.
+         // Other exceptions: Something unexpected happened. The browser shows an error dialog to the user.
+         if (error instanceof InvalidStateError){
+           console.log("Passkey already exists on the device.");
+         } else if (error instanceof NotAllowedError){
+           console.log("User canceled the operation.");
+         } else if (error instanceof AbortError){
+           console.log("Operation aborted.");
+         } else {
+           console.log("Unexpected error:", error);
+         }
+       }
         console.log(credential);
       }
     });
